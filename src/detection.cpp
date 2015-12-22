@@ -40,7 +40,7 @@ void RegisterAdded(const v8::FunctionCallbackInfo<v8::Value>& args)
         callback = args[0].As<v8::Function>();
     }
 
-    addedCallback = new NanCallback(callback);
+    addedCallback = new Nan::Callback(callback);
     isAddedRegistered = true;
 }
 
