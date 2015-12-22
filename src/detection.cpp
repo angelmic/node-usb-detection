@@ -51,7 +51,7 @@ void NotifyAdded(ListResultItem_t* it)
 
     if (isAddedRegistered)
     {
-        v8::Local<v8::Value> argv[1];
+        v8::Handle<v8::Value> argv[1];
         
         v8::Local<v8::Object> item = v8::Object::New(isolate);
         
@@ -126,7 +126,7 @@ void NotifyRemoved(ListResultItem_t* it)
 
     if (isRemovedRegistered)
     {
-        v8::Local<v8::Value> argv[1];
+        v8::Handle<v8::Value> argv[1];
         
         v8::Local<v8::Object> item = v8::Object::New(isolate);
         
