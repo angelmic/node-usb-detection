@@ -11,10 +11,10 @@
 #define OBJECT_ITEM_MOUNT_PATH      "mountPath"
 
 
-NanCallback* addedCallback;
+Nan::Callback* addedCallback;
 bool isAddedRegistered = false;
 
-NanCallback* removedCallback;
+Nan::Callback* removedCallback;
 bool isRemovedRegistered = false;
 
 void RegisterAdded(const v8::FunctionCallbackInfo<v8::Value>& args)
@@ -26,7 +26,7 @@ void RegisterAdded(const v8::FunctionCallbackInfo<v8::Value>& args)
 
     if (args.Length() == 0)
     {
-        return NanThrowTypeError("First argument must be a function");
+        return Nan::ThrowTypeError("First argument must be a function");
     }
 
     if (args.Length() == 1)
@@ -34,13 +34,13 @@ void RegisterAdded(const v8::FunctionCallbackInfo<v8::Value>& args)
         // callback
         if (!args[0]->IsFunction())
         {
-            return NanThrowTypeError("First argument must be a function");
+            return Nan::ThrowTypeError("First argument must be a function");
         }
 
         callback = args[0].As<v8::Function>();
     }
 
-    addedCallback = new NanCallback(callback);
+    addedCallback = new Nan::Callback(callback);
     isAddedRegistered = true;
 }
 
@@ -101,7 +101,7 @@ void RegisterRemoved(const v8::FunctionCallbackInfo<v8::Value>& args)
 
     if (args.Length() == 0)
     {
-        return NanThrowTypeError("First argument must be a function");
+        return Nan::ThrowTypeError("First argument must be a function");
     }
 
     if (args.Length() == 1)
@@ -109,13 +109,13 @@ void RegisterRemoved(const v8::FunctionCallbackInfo<v8::Value>& args)
         // callback
         if (!args[0]->IsFunction())
         {
-            return NanThrowTypeError("First argument must be a function");
+            return Nan::ThrowTypeError("First argument must be a function");
         }
 
         callback = args[0].As<v8::Function>();
     }
 
-    removedCallback = new NanCallback(callback);
+    removedCallback = new Nan::Callback(callback);
     isRemovedRegistered = true;
 }
 
@@ -176,7 +176,7 @@ void Find(const v8::FunctionCallbackInfo<v8::Value>& args)
 
     if (args.Length() == 0)
     {
-        return NanThrowTypeError("First argument must be a function");
+        return Nan::ThrowTypeError("First argument must be a function");
     }
 
     if (args.Length() == 3)
@@ -190,7 +190,7 @@ void Find(const v8::FunctionCallbackInfo<v8::Value>& args)
         // callback
         if (!args[2]->IsFunction())
         {
-            return NanThrowTypeError("Third argument must be a function");
+            return Nan::ThrowTypeError("Third argument must be a function");
         }
 
         callback = args[2].As<v8::Function>();
@@ -206,7 +206,7 @@ void Find(const v8::FunctionCallbackInfo<v8::Value>& args)
         // callback
         if (!args[1]->IsFunction())
         {
-            return NanThrowTypeError("Second argument must be a function");
+            return Nan::ThrowTypeError("Second argument must be a function");
         }
 
         callback = args[1].As<v8::Function>();
@@ -217,7 +217,7 @@ void Find(const v8::FunctionCallbackInfo<v8::Value>& args)
         // callback
         if (!args[0]->IsFunction())
         {
-            return NanThrowTypeError("First argument must be a function");
+            return Nan::ThrowTypeError("First argument must be a function");
         }
 
         callback = args[0].As<v8::Function>();
@@ -225,7 +225,7 @@ void Find(const v8::FunctionCallbackInfo<v8::Value>& args)
 
     ListBaton* baton = new ListBaton();
     strcpy(baton->errorString, "");
-    baton->callback = new NanCallback(callback);
+    baton->callback = new Nan::Callback(callback);
     
     //baton->callback = v8::Persistent<v8::Value>::New(isolate, callback);
     //NanAssignPersistent(baton->callback, new NanCallback(callback));
@@ -246,12 +246,12 @@ void EIO_AfterFind(uv_work_t* req)
 
     ListBaton* data = static_cast<ListBaton*>(req->data);
 
-    v8::Handle<v8::Value> argv[2];
+    v8::Local<v8::Value> argv[2];
 
     if (data->errorString[0])
     {
         argv[0] = v8::Exception::Error(v8::String::NewFromUtf8(isolate, data->errorString));
-        argv[1] = NanUndefined();
+        argv[1] = Nan::Undefined();
     }
 
     else
@@ -291,7 +291,7 @@ void EIO_AfterFind(uv_work_t* req)
             results->Set(i, item);
         }
 
-        argv[0] = NanUndefined();
+        argv[0] = Nan::Undefined();
         argv[1] = results;
     }
 

@@ -18,8 +18,6 @@ else
   detector.find = detection.find;
 
   detection.registerAdded(function(device) {
-    //console.log("registerAdded:", device, device.vendorId, device.productId);
-    console.log("registerAdded");
 
     detector.emit('add', device);
     detector.emit('add:' + device.vendorId + ':' + device.productId, device);
@@ -32,7 +30,6 @@ else
   });
 
   detection.registerRemoved(function(device) {
-    console.log("registerRemoved");
 
     detector.emit('remove', device);
     detector.emit('remove:' + device.vendorId + ':' + device.productId, device);
